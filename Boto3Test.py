@@ -1,6 +1,6 @@
 import boto3
 
-def PrintInstanceInformation(instance):
+def InstanceData(instance):
     logString = ""
     logString += str(instance['InstanceId']) + '\t'
     logString += str(instance['InstanceType']) + '\t'
@@ -13,10 +13,12 @@ def PrintInstanceInformation(instance):
         if num < interfaceCount:
             logString += ", "
 
+    return logString
+
 ec2 = boto3.client('ec2')
 
 apiResponse = ec2.describe_instances()
 
 for reservation in apiResponse['Reservations']:
     for instance in reservation['Instances']:
-        PrintInstanceInformation(instance)
+        print(InstanceData(instance))
