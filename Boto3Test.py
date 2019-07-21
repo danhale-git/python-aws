@@ -3,11 +3,12 @@ import pprint
 
 ec2 = boto3.client('ec2')
 
-instances = ec2.describe_instances()['Reservations'][0]['Instances']
+instances = ec2.describe_instances()
 
-for instance in instances:
-    print(instance['InstanceId'])
-    print(instance['InstanceType'])
-    print(instance['PublicDnsName'])
-    for nic in instance['NetworkInterfaces']:
-        print(instance['Association']['PublicIp'])
+for reservation in instances['Reservations']:
+    for instance in reservation:
+        print(instance['InstanceId'])
+        print(instance['InstanceType'])
+        print(instance['PublicDnsName'])
+        for nic in instance['NetworkInterfaces']:
+            print(nic['Association']['PublicIp'])
