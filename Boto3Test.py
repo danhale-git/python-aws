@@ -5,4 +5,8 @@ ec2 = boto3.client('ec2')
 
 instances = ec2.describe_instances()['Reservations'][0]['Instances']
 
-pprint.pprint(instances)
+for instance in instances:
+    print(instance['InstanceId'])
+    print(instance['InstanceType'])
+    print(instance['PublicDnsName'])
+    print(instance['PublicIp'])
