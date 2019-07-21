@@ -10,6 +10,7 @@ def InstanceData(instance):
 
     for num, nic in enumerate(instance['NetworkInterfaces']):
         logString += nic['Association']['PublicIp']
+        print(num+" "+interfaceCount)
         if num < interfaceCount:
             logString += ", "
 
