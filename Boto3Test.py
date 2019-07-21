@@ -1,11 +1,17 @@
 import boto3
 
 def PrintInstanceInformation(instance):
-    print(instance['InstanceId'])
-    print(instance['InstanceType'])
-    print(instance['PublicDnsName'])
-    for nic in instance['NetworkInterfaces']:
-        print(nic['Association']['PublicIp'])
+    logString = ""
+    logString += str(instance['InstanceId']) + '\t'
+    logString += str(instance['InstanceType']) + '\t'
+    logString += str(instance['PublicDnsName']) + '\t'
+
+    interfaceCount = len(instance['NetworkInterfaces'])
+
+    for num, nic in enumerate(instance['NetworkInterfaces']):
+        logString += nic['Association']['PublicIp']
+        if num < interfaceCount:
+            logString += ", "
 
 ec2 = boto3.client('ec2')
 
