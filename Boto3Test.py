@@ -1,4 +1,5 @@
 import boto3
+import pprint
 
 def InstanceData(instance):
     logString = ""
@@ -22,3 +23,5 @@ apiResponse = ec2.describe_instances()
 for reservation in apiResponse['Reservations']:
     for instance in reservation['Instances']:
         print(InstanceData(instance))
+
+pprint.pprint(apiResponse)
