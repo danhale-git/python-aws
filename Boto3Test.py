@@ -6,6 +6,7 @@ def InstanceData(instance):
     logString += instance['InstanceId'] + '\t'
     logString += instance['InstanceType'] + '\t'
     logString += instance['LaunchTime'].strftime("%d/%m/%Y, %H:%M:%S") + '\t'
+    logString += instance['State']['Name'] + '\t'
     logString += instance['PublicDnsName'] + '\t'
 
     interfaceCount = len(instance['NetworkInterfaces'])
