@@ -5,7 +5,7 @@ def InstanceData(instance):
     logString = ""
     logString += instance['InstanceId'] + '\t'
     logString += instance['InstanceType'] + '\t'
-    logString += instance['LaunchTime'].strftime("%d/%m/%Y, %H:%M:%S")
+    logString += instance['LaunchTime'].strftime("%d/%m/%Y, %H:%M:%S") + '\t'
     logString += instance['PublicDnsName'] + '\t'
 
     interfaceCount = len(instance['NetworkInterfaces'])
@@ -25,4 +25,4 @@ for reservation in apiResponse['Reservations']:
     for instance in reservation['Instances']:
         print(InstanceData(instance))
 
-pprint.pprint(apiResponse)
+#pprint.pprint(apiResponse)
