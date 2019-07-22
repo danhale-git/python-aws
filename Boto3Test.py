@@ -3,9 +3,10 @@ import pprint
 
 def InstanceData(instance):
     logString = ""
-    logString += str(instance['InstanceId']) + '\t'
-    logString += str(instance['InstanceType']) + '\t'
-    logString += str(instance['PublicDnsName']) + '\t'
+    logString += instance['InstanceId'] + '\t'
+    logString += instance['InstanceType'] + '\t'
+    logString += instance['LaunchTime'].strftime("%d/%m/%Y, %H:%M:%S")
+    logString += instance['PublicDnsName'] + '\t'
 
     interfaceCount = len(instance['NetworkInterfaces'])
 
