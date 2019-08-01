@@ -49,7 +49,7 @@ def PrintActiveInstanceLines():
 #        print(type(value))
 
     for index, host in enumerate(activeKeyEntries):
-        entry = paramiko.hostkeys.HostKeyEntry(hostnames=host, key=activeKeyEntries[index])
+        entry = paramiko.hostkeys.HostKeyEntry(hostnames=[host], key=activeKeyEntries[index])
         print(entry.to_line())
 
 GetActiveInstances()
