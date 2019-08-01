@@ -2,14 +2,15 @@ import sys
 import boto3
 import paramiko
 from botocore.exceptions import ClientError
-import json#DEBUG
 
 #TODO
 # handle multiple keys per host
 # consider raising exceptions as opposed to exit(1). Which is more robust?
 # implement argparse for known_hosts path
-# hash new known_hosts contents using paramiko?
+# return hashed version of output using paramiko?
 # is there something lighter than ec2.describe_instances that can be used to get ec2 public dns hosts?
+# SubDictValue() seems sloppy, is there a better way than .values())[0]?
+# Why does the hostnames parameter in HostKeyEntry expect a list, am I missing something?
 
 known_hostsPath = '/home/dhale/.ssh/known_hosts'
 
@@ -28,6 +29,9 @@ def GetActiveInstances():
         for instance in reservation['Instances']:
             activeInstances.append(instance['PublicDnsName'])
 
+def SubDictValue(subDict):
+    return list(subDict.values())[0]
+
 def GetActiveKeyEntries():
     known_hosts = paramiko.hostkeys.HostKeys()
     known_hosts.load(known_hostsPath)
@@ -35,7 +39,7 @@ def GetActiveKeyEntries():
     for instance in activeInstances:
         entry = known_hosts.lookup(instance)
         if entry != None:
-            activeKeyEntries.append(list(entry.values())[0])
+            activeKeyEntries.append(SubDictValue(entry))
         else:
             activeInstances.remove(instance)
 
