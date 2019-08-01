@@ -1,5 +1,7 @@
+import sys
 import boto3
 import paramiko
+from botocore.exceptions import ClientError
 
 #TODO
 # implement argparse for known_hosts path
@@ -14,8 +16,12 @@ activeInstances = []
 activeHostEntries = []
 
 def GetActiveInstances():
-    ec2 = boto3.client('ec2')
-    apiResponse = ec2.describe_instances()
+    try:
+        ec2 = boto3.client('ec2') # Should this be in the try: block? Can it throw a ClientError?
+        apiResponse = ec2.describe_instances()
+    except ClientError as error:
+        print('Error: '+error.response['Error']['Code'])
+        sys.exit(1)
 
     for reservation in apiResponse['Reservations']:
         for instance in reservation['Instances']:
