@@ -45,19 +45,19 @@ def PrintActiveInstanceLines():
         print('Error: ActiveInstances and ActiveHostEntry arrays are not equal length.')
         exit(1)
 
-    for value in activeKeyEntries:#DEBUG
-        print(type(value))
+#    for value in activeKeyEntries:#DEBUG
+#        print(type(value))
 
-    #for index, host in enumerate(activeKeyEntries):
-    #    entry = paramiko.hostkeys.HostKeyEntry(hostnames=host, key=activeKeyEntries[index])
-    #    print(entry.to_line())
+    for index, host in enumerate(activeKeyEntries):
+        entry = paramiko.hostkeys.HostKeyEntry(hostnames=host, key=activeKeyEntries[index])
+        print(entry.to_line())
 
 GetActiveInstances()
 GetActiveKeyEntries()
 PrintActiveInstanceLines()
 
-for host in activeKeyEntries:
-    print(host)
+#for host in activeKeyEntries:
+#    print(host)
 
 for instance in activeInstances:
     print(instance)
