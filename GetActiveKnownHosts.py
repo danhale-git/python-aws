@@ -36,7 +36,7 @@ def GetActiveKeyEntries():
     for instance in activeInstances:
         entry = known_hosts.lookup(instance)
         if entry != None:
-            activeKeyEntries.append(entry['ecdsa-sha2-nistp256'])
+            activeKeyEntries.append(list(entry.values())[0])
         else:
             activeInstances.remove(instance)
 
