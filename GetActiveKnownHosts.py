@@ -43,7 +43,7 @@ def PrintActiveInstanceLines():
         print('Error: ActiveInstances and ActiveHostEntry arrays are not equal length.')
         exit(1)
 
-    for key, value in activeKeyEntries[0]:#DEBUG
+    for key, value in activeKeyEntries[0].items():#DEBUG
         print(str(key)+" "+str(value))
 
     for index, host in enumerate(activeKeyEntries):
