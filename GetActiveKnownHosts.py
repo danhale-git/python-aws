@@ -14,7 +14,7 @@ import json#DEBUG
 known_hostsPath = '/home/dhale/.ssh/known_hosts'
 
 activeInstances = []
-activeKeyEntries = []
+activeKeyEntries = {}
 
 def GetActiveInstances():
     try:
@@ -35,7 +35,7 @@ def GetActiveKeyEntries():
     for instance in activeInstances:
         entry = known_hosts.lookup(instance)
         if entry != None:
-            activeKeyEntries.append(entry)
+            activeKeyEntries.update(entry)
         else:
             activeInstances.remove(instance)
 
@@ -44,12 +44,12 @@ def PrintActiveInstanceLines():
         print('Error: ActiveInstances and ActiveHostEntry arrays are not equal length.')
         exit(1)
 
-    for key in activeKeyEntries[0]:#DEBUG
-        print(json.dumps(key))
+    for value in activeKeyEntries.values():#DEBUG
+        print(type(value))
 
-    for index, host in enumerate(activeKeyEntries):
-        entry = paramiko.hostkeys.HostKeyEntry(hostnames=host, key=activeKeyEntries[index])
-        print(entry.to_line())
+    #for index, host in enumerate(activeKeyEntries):
+    #    entry = paramiko.hostkeys.HostKeyEntry(hostnames=host, key=activeKeyEntries[index])
+    #    print(entry.to_line())
 
 GetActiveInstances()
 GetActiveKeyEntries()
