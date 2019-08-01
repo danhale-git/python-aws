@@ -4,16 +4,16 @@ import paramiko
 from botocore.exceptions import ClientError
 
 #TODO
+# consider raising exceptions as opposed to exit(1). Which is more robust?
 # implement argparse for known_hosts path
 # hash new known_hosts contents using paramiko?
 # is there something lighter than ec2.describe_instances that can be used to get ec2 public dns hosts?
 # print actual known_hosts file entries 
-# handle boto3 client errors
 
 known_hostsPath = '/home/dhale/.ssh/known_hosts'
 
 activeInstances = []
-activeHostEntries = []
+activeKeyEntries = []
 
 def GetActiveInstances():
     try:
@@ -21,27 +21,40 @@ def GetActiveInstances():
         apiResponse = ec2.describe_instances()
     except ClientError as error:
         print('Error: '+error.response['Error']['Code'])
-        sys.exit(1)
+        exit(1)
 
     for reservation in apiResponse['Reservations']:
         for instance in reservation['Instances']:
             activeInstances.append(instance['PublicDnsName'])
 
-def GetActiveHostEntries():
+def GetActiveKeyEntries():
     known_hosts = paramiko.hostkeys.HostKeys()
     known_hosts.load(known_hostsPath)
 
     for instance in activeInstances:
         entry = known_hosts.lookup(instance)
         if entry != None:
-            activeHostEntries.append(entry)
+            activeKeyEntries.append(entry)
         else:
             activeInstances.remove(instance)
 
-GetActiveInstances()
-GetActiveHostEntries()
+def PrintActiveInstanceLines():
+    if len(activeKeyEntries) != len(activeInstances):
+        print('Error: ActiveInstances and ActiveHostEntry arrays are not equal length.')
+        exit(1)
 
-for host in activeHostEntries:
+    for key, value in activeKeyEntries[0]:#DEBUG
+        print(str(key)+" "+str(value))
+
+    for index, host in enumerate(activeKeyEntries):
+        entry = paramiko.hostkeys.HostKeyEntry(hostnames=host, key=activeKeyEntries[index])
+        print(entry.to_line())
+
+GetActiveInstances()
+GetActiveKeyEntries()
+PrintActiveInstanceLines()
+
+for host in activeKeyEntries:
     print(host)
 
 for instance in activeInstances:
