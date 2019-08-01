@@ -1,6 +1,8 @@
 import boto3
 import paramiko
 
+known_hostsPath = '/home/dhale/.ssh/known_hosts'
+
 def GetActiveInstances():
     ec2 = boto3.client('ec2')
     apiResponse = ec2.describe_instances()
@@ -11,7 +13,7 @@ def GetActiveInstances():
 
 def GetActiveHostEntries():
     known_hosts = paramiko.hostkeys.HostKeys()
-    known_hosts.load('~/.ssh/known_hosts')
+    known_hosts.load(known_hostsPath)
 
     for instance in activeInstances:
         entry = known_hosts.lookup(instance)
