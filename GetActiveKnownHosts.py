@@ -2,6 +2,7 @@ import sys
 import boto3
 import paramiko
 from botocore.exceptions import ClientError
+import json#DEBUG
 
 #TODO
 # consider raising exceptions as opposed to exit(1). Which is more robust?
@@ -43,8 +44,8 @@ def PrintActiveInstanceLines():
         print('Error: ActiveInstances and ActiveHostEntry arrays are not equal length.')
         exit(1)
 
-    for key in activeKeyEntries[0].keys():#DEBUG
-        print(key)
+    for key in activeKeyEntries[0]:#DEBUG
+        print(json.dumps(key))
 
     for index, host in enumerate(activeKeyEntries):
         entry = paramiko.hostkeys.HostKeyEntry(hostnames=host, key=activeKeyEntries[index])
