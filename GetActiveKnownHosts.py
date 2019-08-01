@@ -5,6 +5,7 @@ from botocore.exceptions import ClientError
 import json#DEBUG
 
 #TODO
+# handle multiple keys per host
 # consider raising exceptions as opposed to exit(1). Which is more robust?
 # implement argparse for known_hosts path
 # hash new known_hosts contents using paramiko?
@@ -35,7 +36,7 @@ def GetActiveKeyEntries():
     for instance in activeInstances:
         entry = known_hosts.lookup(instance)
         if entry != None:
-            activeKeyEntries.append(entry.values()[0])
+            activeKeyEntries.append(entry['ecdsa-sha2-nistp256'])
         else:
             activeInstances.remove(instance)
 
