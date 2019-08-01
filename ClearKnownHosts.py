@@ -1,18 +1,6 @@
 import boto3
 import paramiko
 
-activeInstances = []
-activeHostEntries = []
-
-GetActiveInstances()
-GetActiveHostEntries()
-
-for host in activeHostEntries:
-    print(host)
-
-for instance in activeInstances:
-    print(instance)
-
 def GetActiveInstances():
     ec2 = boto3.client('ec2')
     apiResponse = ec2.describe_instances()
@@ -31,6 +19,20 @@ def GetActiveHostEntries():
             activeHostEntries.append(entry)
         else:
             activeInstances.remove(instance)
+
+activeInstances = []
+activeHostEntries = []
+
+GetActiveInstances()
+GetActiveHostEntries()
+
+for host in activeHostEntries:
+    print(host)
+
+for instance in activeInstances:
+    print(instance)
+
+
 
 
     
